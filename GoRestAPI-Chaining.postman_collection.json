@@ -1,0 +1,233 @@
+{
+	"info": {
+		"_postman_id": "d353d9c8-7ec8-41ed-acd9-6e00f738b6b5",
+		"name": "GoRestAPI-Chaining",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39460982"
+	},
+	"item": [
+		{
+			"name": "Create a user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"url_env\",\"https://gorest.co.in\");\r",
+							"\r",
+							"var random=Math.random().toString(36).substring(2);\r",
+							"\r",
+							"var username=random;\r",
+							"pm.environment.set(\"name_env\",username)\r",
+							"\r",
+							"var useremail=random+\"@gmail.com\";\r",
+							"pm.environment.set(\"email_env\",useremail);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData=pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"id_env\",jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{name_env}}\",\r\n    \"email\": \"{{email_env}}\",\r\n    \"gender\": \"male\",\r\n    \"status\": \"active\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_env}}/public/v2/users",
+					"host": [
+						"{{url_env}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user details",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData=pm.response.json();\r",
+							"\r",
+							"pm.test(\"Values of json fields\",()=>{\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"id_env\"));\r",
+							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"name_env\"));\r",
+							"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"email_env\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_env}}/public/v2/users/{{id_env}}",
+					"host": [
+						"{{url_env}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{id_env}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var random=Math.random().toString(36).substring(2);\r",
+							"\r",
+							"username=random;\r",
+							"pm.environment.set(\"name_env\",username)\r",
+							"\r",
+							"useremail=random+\"@gmail.com\";\r",
+							"pm.environment.set(\"email_env\",useremail);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{name_env}}\",\r\n    \"email\": \"{{email_env}}\",\r\n    \"gender\": \"male\",\r\n    \"status\": \"inactive\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_env}}/public/v2/users/{{id_env}}",
+					"host": [
+						"{{url_env}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{id_env}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.unset(\"url_env\");\r",
+							"pm.environment.unset(\"id_env\");\r",
+							"pm.environment.unset(\"name_env\");\r",
+							"pm.environment.unset(\"email_env\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url_env}}/public/v2/users/{{id_env}}",
+					"host": [
+						"{{url_env}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{id_env}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "8d9079c536062ea513f9994ef2b26694545e6b553f4a7a61f827f2d0591da2d4",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
